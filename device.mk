@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 The CyanogenMod Project
+# Copyright (C) 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/xiaomi/kenzo/kenzo-vendor.mk)
+$(call inherit-product-if-exists, vendor/bq/gohan/gohan-vendor.mk)
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
@@ -45,7 +45,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.full.xml:system/etc/permissions/android.hardware.camera.full.xml\
     frameworks/native/data/etc/android.hardware.camera.raw.xml:system/etc/permissions/android.hardware.camera.raw.xml\
     frameworks/native/data/etc/android.hardware.consumerir.xml:system/etc/permissions/android.hardware.consumerir.xml \
-    frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
@@ -66,11 +65,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
-# ANT+
-PRODUCT_PACKAGES += \
-    AntHalService \
-    com.dsi.ant.antradio_library \
-    libantradio
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -79,9 +73,9 @@ PRODUCT_PACKAGES += \
     audio.primary.msm8952 \
     audio.r_submix.default \
     audio.usb.default \
-    libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libqcompostprocbundle \
     tinymix
 
 PRODUCT_COPY_FILES += \
@@ -96,17 +90,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     Gello
 
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
-
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
 
-# DataServices
+# Snapdragon Camera
 PRODUCT_PACKAGES += \
-    librmnetctl
+    libbson \
+    Snap
 
 # Display
 PRODUCT_PACKAGES += \
@@ -116,26 +107,10 @@ PRODUCT_PACKAGES += \
     memtrack.msm8952 \
     liboverlay
 
-# Fingerprint
-PRODUCT_PACKAGES += \
-    fingerprintd
-
 # FM
 PRODUCT_PACKAGES += \
     FMRadio \
     libfmjni
-
-# GPS
-PRODUCT_PACKAGES += \
-    flp.conf \
-    gps.conf \
-    izat.conf \
-    lowi.conf \
-    sap.conf \
-    xtwifi.conf
-
-PRODUCT_PACKAGES += \
-    gps.msm8952
 
 # IPACM
 PRODUCT_PACKAGES += \
@@ -152,9 +127,10 @@ PRODUCT_COPY_FILES += \
 
 # Keylayout
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/keylayout/Atmel_maXTouch_Touchscreen.kl:system/usr/keylayout/Atmel_maXTouch_Touchscreen.kl \
     $(LOCAL_PATH)/keylayout/ft5x06_ts.kl:system/usr/keylayout/ft5x06_ts.kl \
     $(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
+    $(LOCAL_PATH)/keylayout/synaptics_dsx.kl:system/usr/keylayout/synaptics_dsx.kl \
+    $(LOCAL_PATH)/keylayout/synaptics_rmi4_i2c.kl:system/usr/keylayout/synaptics_rmi4_i2c.kl \
     $(LOCAL_PATH)/keylayout/msm8976-tashalite-snd-card_Button_Jack.kl:system/usr/keylayout/msm8976-tashalite-snd-card_Button_Jack.kl
 
 # Keymaster
@@ -164,6 +140,19 @@ PRODUCT_PACKAGES += \
 # Lights
 PRODUCT_PACKAGES += \
     lights.msm8952
+
+# GPS
+PRODUCT_PACKAGES += \
+    gps.msm8952
+
+PRODUCT_PACKAGES += \
+    flp.conf \
+    gps.conf \
+    izat.conf \
+    lowi.conf \
+    sap.conf \
+    xtwifi.conf
+
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -196,6 +185,7 @@ PRODUCT_PACKAGES += \
 # Qualcomm dependencies
 PRODUCT_PACKAGES += \
     libtinyxml \
+    librmnetctl \
     libxml2
 
 # Ramdisk
@@ -218,10 +208,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     sensors.msm8952
 
-# Snapdragon Camera
-PRODUCT_PACKAGES += \
-    Snap
-
 # Sound trigger
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/sound_trigger_mixer_paths.xml:system/etc/sound_trigger_mixer_paths.xml \
@@ -237,15 +223,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin \
     $(LOCAL_PATH)/wifi/WCNSS_wlan_dictionary.dat:system/etc/firmware/wlan/prima/WCNSS_wlan_dictionary.dat
 
-PRODUCT_PACKAGES += \
-    wcnss_service
-
 # Wifi
-PRODUCT_PACKAGES += \
-    libqsap_sdk \
-    libQWiFiSoftApCfg \
-    libwpa_client
-
 PRODUCT_PACKAGES += \
     dhcpcd.conf \
     hostapd_default.conf \
@@ -256,3 +234,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
     wpa_supplicant_overlay.conf
+
+PRODUCT_PACKAGES += \
+    libwpa_client \
+    libqsap_sdk \
+    libQWiFiSoftApCfg \
+    wcnss_service
+
